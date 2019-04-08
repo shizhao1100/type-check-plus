@@ -25,7 +25,7 @@ npm install type-check-plus
 |date|check('2018-02-31', 'date')||false|
 |array|check([], 'array')|true||
 |function|check((function () { }), 'function')|true||
-|emailaddress|check('sz_p@outlook.com', 'emailaddress'|true||
+|emailaddress|check('sz_p@outlook.com', 'emailaddress)'|true||
 
 # CheckArray
 use '[]' to define array like `[parameter][]` Example:`int[]`,`number[]` all parameter is in [ParameterList](#ParameterList)
