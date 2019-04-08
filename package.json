@@ -6,6 +6,7 @@
   "author": "sz-p <sz_p@outlook.com>",
   "license": "MIT",
   "homepage": "https://github.com/shizhao1100/type-check-plus",
+  "bugs": "https://github.com/shizhao1100/type-check-plus/issues",
   "dependencies": {},
   "keywords": [
     "check",
@@ -13,6 +14,15 @@
     "node",
     "library"
   ],
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/shizhao1100/type-check-plus.git"
+  },
   "scripts": {
     "test": "jest"
   },
