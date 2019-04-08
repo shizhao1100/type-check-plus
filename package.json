@@ -1,25 +1,25 @@
 {
-	"name": "type-check-plus",
-	"version": "1.0.0",
-	"description": "check javascript variable by desclarartion",
-	"main": "index.js",
-	"author": "psz",
-	"license": "MIT",
-	"homepage": "http://.",
-	"dependencies": {},
-	"keywords": [
-		"check",
-		"variable",
-		"node",
-		"library"
-	],
-	"scripts": {
-		"test": "jest"
-	},
-	"devDependencies": {
-		"@types/jest": "^24.0.11",
-		"jest": "^24.5.0",
-		"ts-jest": "^24.0.0",
-		"typescript": "^3.0.3"
-	}
+  "name": "type-check-plus",
+  "version": "1.0.0",
+  "description": "A library for javascript to check value is equle or not with the definition",
+  "main": "./dist/src/index.js",
+  "author": "sz-p <sz_p@outlook.com>",
+  "license": "MIT",
+  "homepage": "https://github.com/shizhao1100/type-check-plus",
+  "dependencies": {},
+  "keywords": [
+    "check",
+    "variable",
+    "node",
+    "library"
+  ],
+  "scripts": {
+    "test": "jest"
+  },
+  "devDependencies": {
+    "@types/jest": "^24.0.11",
+    "jest": "^24.5.0",
+    "ts-jest": "^24.0.0",
+    "typescript": "^3.0.3"
+  }
 }
