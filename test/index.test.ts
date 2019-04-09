@@ -1,4 +1,4 @@
-import check, { checkTree } from '../src/index';
+import check, { checkTree } from '../dist/src/index';
 const testTree = {
   name: 'aa',
   value: 1,
