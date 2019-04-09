@@ -35,12 +35,12 @@ const objDefine = [{
     friends: '?string[]'
 }]
 const option = {
-  // if 'objValue is very large use 'threshold' to limit check count' 
+  // if objValue is very large use 'threshold' to limit check count
   threshold: 1,
   onError: (value,define)=>{console.log(value,define)},
   onCheck: (value,define)=>{console.log(value,define)}
 }
-check(objValue, objDefine,option)  // true                    
+check(objValue,objDefine,option)  // true                    
 ```
 
 # ParameterList
@@ -65,7 +65,7 @@ check(objValue, objDefine,option)  // true
 |emailaddress|check('sz_p@outlook.com', 'emailaddress)'|true|
 
 # CheckArray
-use '[]' to define array like `[parameter][]` Example:`int[]`,`number[]` all parameter is in [ParameterList](#ParameterList)
+use '[]' to define array like `'[parameter][]'` Example:`'int[]'`,`'number[]'` all parameter is in [ParameterList](#ParameterList)
 ## example
 |Parameter|Example|return|description|
 |:---:|:---:|:---:|:---:|
@@ -136,7 +136,7 @@ const objDefine = [{
     friends: 'string[]'
 }]
 
-check(objValue, objDefine) // true
+check(objValue,objDefine) // true
 ```
 # CheckTree
 ```javascript
@@ -179,8 +179,8 @@ checkTree(treeValue,treeDefine) // true
 |option|type|description|
 |:---:|:---:|:---:|
 |threshold|int|if value is very large use 'threshold' to limit check count|
-|onError|function(value:string,define:string):boolean|before return false call onError|
-|onCheck|function(value:string,define:string):boolean|before check value or value's attribute call onCheck|
+|onError|function(value:string,define:string):void|before return false call onError|
+|onCheck|function(value:string,define:string):void|before check value or value's attribute call onCheck|
 
 # Test
 ```shell
