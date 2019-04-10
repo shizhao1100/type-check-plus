@@ -74,16 +74,6 @@ var isDate = function (value) {
     }
     return true;
 };
-// const isDateTime = function (value: any): boolean {
-//   var dateTimeReg = /^(\d+)-(\d{ 1,2})-(\d{ 1,2})(\d{ 1,2}):(\d{1,2}):(\d{1,2})$/;
-//   var d = new Date(r[1], r[2], r[3], r[4], r[5], r[6]);
-//   //TODO isDateTime
-//   return true;
-// }
-// const isTime = function (value: any): boolean {
-//   //TODO isTime
-//   return true;
-// }
 var isEmailAddress = function (value) {
     var emailReg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/;
     if (emailReg.test(value)) {
@@ -152,7 +142,7 @@ var checkOneDesclarartion = function (value, desclarartion) {
 };
 var checkItem = function (value, desclarartion) {
     if (isString(desclarartion)) {
-        desclarartion = desclarartion.replace(/ /g, '');
+        desclarartion = desclarartion.toLowerCase().replace(/ /g, '');
         var desclarartions = desclarartion.split('|');
         for (var i = 0; i < desclarartions.length; i++) {
             if (!checkOneDesclarartion(value, desclarartions[i])) {
@@ -245,13 +235,6 @@ var check = function (value, desclarartion, option) {
     return false;
 };
 exports.default = check;
-/**
- * get next node information
- * like next node name isArray? canBeUndefind？
- *
- * @param {object} nodeDesclarartion
- * @returns {InodeInfor}
- */
 var getNextNodeInfor = function (nodeDesclarartion) {
     var nodeInfor = {
         nextNodeName: '',
@@ -325,14 +308,6 @@ var checkTreeNode = function (node, nodeDesclarartion, nodeInfor, counter, optio
     }
     return true;
 };
-/**
- * checkTree
- *
- * @param {*} value valueBeCheck
- * @param {object} nodeDesclarartion node desclarartion use 'node' to define next node name
- * @param {Ioption} [option]
- * @returns {boolean}
- */
 var checkTree = function (value, nodeDesclarartion, option) {
     var nodeInfor = getNextNodeInfor(nodeDesclarartion);
     var counter = { checkCount: 0 };
