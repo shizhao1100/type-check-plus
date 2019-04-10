@@ -1,4 +1,4 @@
-interface Ioption {
+export interface Ioption {
   threshold?: number,
   onError?: any,
   onSucess?: any,
@@ -160,7 +160,7 @@ const checkOneDesclarartion = function (value: any, desclarartion: string): bool
 }
 const checkItem = function (value: any, desclarartion: string): boolean {
   if (isString(desclarartion)) {
-    desclarartion = desclarartion.replace(/ /g, '');
+    desclarartion = desclarartion.toLowerCase().replace(/ /g, '');
     let desclarartions = desclarartion.split('|');
     for (let i = 0; i < desclarartions.length; i++) {
       if (!checkOneDesclarartion(value, desclarartions[i])) {
@@ -236,7 +236,7 @@ const checkObject = function (value: object, desclarartion: object, option?: Iop
   return true;
 }
 
-let check = function (value: any, desclarartion: any, option?: Ioption): boolean {
+const check = function (value: any, desclarartion: any, option?: Ioption): boolean {
   if (desclarartionIsArray(value, desclarartion)) {
     return checkArray(value, desclarartion, option);
   }
