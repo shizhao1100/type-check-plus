@@ -1,5 +1,5 @@
 # type-check-plus
-A library for javascript to check value is equle or not with the definition
+A library for javascript to check value is equal or not with the definition
 
 # Install
 ```shell
@@ -31,7 +31,7 @@ const objDefine = [{
         hight: 'number',
         weight: 'number'
     },
-    // if 'friends' can be undefind use '?' in first chart
+    // if 'friends' can be undefind use '?' in first char
     friends: '?string[]'
 }]
 const option = {
