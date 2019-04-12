@@ -37,7 +37,7 @@ var isTextColor = function (value) {
 };
 var isColor = function (value) {
     var HEXColorReg = /^#([0-9a-fA-F]{6}|[0-9a-fA-F]{3})$/g;
-    var RGBAColorReg = /^[rR][gG][Bb][Aa]?[\(]([\s]*(2[0-4][0-9]|25[0-5]|[01]?[0-9][0-9]?),){2}[\s]*(2[0-4][0-9]|25[0-5]|[01]?[0-9][0-9]?),?[\s]*(100|[0-9][0-9]?)?[\)]{1}$/g;
+    var RGBAColorReg = /^[rR][gG][Bb][Aa]?[\(]([\s]*(2[0-4][0-9]|25[0-5]|[01]?[0-9][0-9]?),){2}[\s]*(2[0-4][0-9]|25[0-5]|[01]?[0-9][0-9]?),?[\s]*(0?\.\d{1,2}|1|0)?[\)]{1}$/g;
     if (isString(value) && (RGBAColorReg.test(value) || HEXColorReg.test(value) || isTextColor(value.toLowerCase()))) {
         return true;
     }

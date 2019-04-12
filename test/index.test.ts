@@ -81,7 +81,13 @@ const testArray: any[] = [
 
   ["#000000 isColor", '#000000', 'color', true],
   ["rgb(0,0,0) isColor", 'rgb(0,0,0)', 'color', true],
-  ["rgba(255,255,255,100) isColor", 'rgba(255,255,255,100)', 'color', true],
+  ["rgba(255,255,255,100) isColor", 'rgba(255,255,255,100)', 'color', false],
+  ["rgba(255,255,255,80) isColor", 'rgba(255,255,255,80)', 'color', false],
+  ["rgba(255,255,255,0.1) isColor", 'rgba(255,255,255,0.1)', 'color', true],
+  ["rgba(255,255,255,.1) isColor", 'rgba(255,255,255,.1)', 'color', true],
+  ["rgba(255,255,255,.99) isColor", 'rgba(255,255,255,.99)', 'color', true],
+  ["rgba(255,255,255,1) isColor", 'rgba(255,255,255,1)', 'color', true],
+
   ["red isColor", 'red', 'color', true],
   ["RED isColor", 'RED', 'color', true],
   ["black isColor", 'black', 'color', true],
