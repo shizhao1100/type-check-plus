@@ -51,11 +51,11 @@ check(objValue,objDefine,option)  // true
 |number|check(1.0, 'number')|true||
 |number|check(NaN, 'number')|false||
 |string|check('string', 'string')|true||
-|boolean|check(true, 'boolean')|true| 0 or 1 is not 'boolean' use true or false|
-|boolean|check(1, 'boolean')|false||
-|any|check(undefined, 'boolean')|true|any imput can be 'any'|
+|boolean|check(true, 'boolean')|true||
+|boolean|check(1, 'boolean')|false| 0 or 1 is not 'boolean' use true or false|
+|any|check(undefined, 'boolean')|true|any input can be 'any'|
 |object|check({}, 'object')|true|
-|color|check('rgba(0,0,0,100)', 'color')|true|alpha:[0-100]|
+|color|check('rgba(0,0,0,100)', 'color')|false|alpha:[0-1] .1 also could be used|
 |color|check('#000000', 'color')|true|
 |color|check('black', 'color')|true|[colorName](http://www.w3school.com.cn/cssref/css_colorsfull.asp)|
 |date|check('2018-08-08', 'date')|true|
