@@ -81,6 +81,12 @@ var isEmailAddress = function (value) {
     }
     return false;
 };
+var isRegExp = function (value) {
+    if (value && value.constructor && value.constructor.name === 'RegExp') {
+        return true;
+    }
+    return false;
+};
 var typeCase = function () {
     return new Map([
         ['number', isNumber],
@@ -93,7 +99,8 @@ var typeCase = function () {
         ['date', isDate],
         ['array', isArray],
         ['function', isFunction],
-        ['emailaddress', isEmailAddress]
+        ['emailaddress', isEmailAddress],
+        ['regexp', isRegExp],
     ]);
 };
 var desclarartionIsArray = function (value, desclarartion) {
@@ -308,6 +315,7 @@ var checkTreeNode = function (node, nodeDesclarartion, nodeInfor, counter, optio
     }
     return true;
 };
+check(/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/, 'regexp');
 var checkTree = function (value, nodeDesclarartion, option) {
     var nodeInfor = getNextNodeInfor(nodeDesclarartion);
     var counter = { checkCount: 0 };

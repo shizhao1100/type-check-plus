@@ -102,7 +102,12 @@ const isEmailAddress = function (value: string): boolean {
   }
   return false;
 }
-
+const isRegExp = function (value: any): boolean {
+  if (value && value.constructor && value.constructor.name === 'RegExp') {
+    return true;
+  }
+  return false;
+}
 const typeCase = function (): any {
   return new Map([
     ['number', isNumber],
@@ -115,7 +120,8 @@ const typeCase = function (): any {
     ['date', isDate],
     ['array', isArray],
     ['function', isFunction],
-    ['emailaddress', isEmailAddress]
+    ['emailaddress', isEmailAddress],
+    ['regexp', isRegExp],
   ]);
 }
 const desclarartionIsArray = function (value: any, desclarartion: any): boolean {
@@ -329,7 +335,7 @@ const checkTreeNode = function (node: any, nodeDesclarartion: object, nodeInfor:
   }
   return true;
 }
-
+check(/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/,'regexp');
 /**
  * checkTree 
  *

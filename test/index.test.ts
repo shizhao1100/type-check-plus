@@ -113,6 +113,9 @@ const testArray: any[] = [
   ["[1,'2',3] isIntArray", [1, '2', 3], "int[]", false],
   ["[1.0,2.1,3.2] isNumberArray", [1.0, 2.1, 3.2], "number[]", true],
 
+  ["/[0-9]*px/ isRegExp",/[0-9]*px/,"regexp",true],
+  ["/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/ isRegExp", /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/,"regexp",true],
+
   ["object check", {}, {}, true],
   ["object check", { name: 'sz-p', age: 12 }, { age: 'int' }, true],
   ["object check", { name: 'sz-p', age: 12 }, {}, true],
