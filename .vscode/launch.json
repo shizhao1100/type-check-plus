@@ -5,6 +5,10 @@
       "name": "launch",
       "type": "node",
       "request": "launch",
+      "outFiles": [
+        "${workspaceRoot}/dist/src/index.js",
+        "${workspaceRoot}/dist/src/index.js.map",
+      ],
       "program": "${workspaceRoot}/src/index.ts",
       "args": [],
       "cwd": "${workspaceRoot}",
