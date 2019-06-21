@@ -113,8 +113,8 @@ const testArray: any[] = [
   ["[1,'2',3] isIntArray", [1, '2', 3], "int[]", false],
   ["[1.0,2.1,3.2] isNumberArray", [1.0, 2.1, 3.2], "number[]", true],
 
-  ["/[0-9]*px/ isRegExp",/[0-9]*px/,"regexp",true],
-  ["/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/ isRegExp", /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/,"regexp",true],
+  ["/[0-9]*px/ isRegExp", /[0-9]*px/, "regexp", true],
+  ["/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/ isRegExp", /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/, "regexp", true],
 
   ["object check", {}, {}, true],
   ["object check", { name: 'sz-p', age: 12 }, { age: 'int' }, true],
@@ -171,9 +171,16 @@ testArray.forEach(item =>
     expect(check(item[1], item[2])).toBe(item[3]);
   })
 )
+
+
 test("[1,2,3.2] isIntArray", () => {
   expect(check([1, 2, 3.2], 'int[]', { threshold: 2 })).toBe(true);
 })
+
+test("throw check", () => {
+  expect(check([1, 2, 3.2], 'int[]', { threshold: 2 })).toBe(true);
+})
+
 test("checkTree", () => {
   expect(checkTree(testTree, {
     name: 'string',
@@ -181,4 +188,39 @@ test("checkTree", () => {
     id: 'int',
     children: '?node[]'
   })).toBe(true);
+})
+const obj = {
+  name: 'sz-p',
+  value: 123,
+  arrayList: [123, "text"]
+}
+const objDefind = {
+  name: 'string',
+  value: 'int',
+  arrayList: ['int', 'string']
+}
+test("trow check object", () => {
+  const mock = jest.fn();
+  check(obj, objDefind, {
+    onCheck: mock
+  })
+  expect(mock).toHaveBeenNthCalledWith(1, 'sz-p', 'string', 'name');
+  expect(mock).toHaveBeenNthCalledWith(2, 123, 'int', 'value');
+  expect(mock).toHaveBeenNthCalledWith(3, [123, "text"], ['int', 'string'], 'arrayList');
+  expect(mock).toHaveBeenNthCalledWith(4, 'text', 'string', 'arrayList', 2);
+  expect(mock).toHaveBeenNthCalledWith(5, 123, 'int', 'arrayList', 1);
+})
+test("trow check tree", () => {
+  const mock = jest.fn();
+  expect(checkTree(testTree, {
+    name: 'string',
+    value: 'int',
+    id: 'int',
+    children: '?node[]'
+  }, { onCheck: mock }));
+  expect(mock).toHaveBeenNthCalledWith(1, 'aa', 'string', 'name', 1);
+  expect(mock).toHaveBeenNthCalledWith(2, 1, 'int', 'value', 1);
+  expect(mock).toHaveBeenNthCalledWith(3, 1, 'int', 'id', 1);
+  expect(mock).toHaveBeenNthCalledWith(4, 'aa', 'string', 'name', 2);
+  expect(mock).toHaveBeenNthCalledWith(5, 2, 'int', 'value', 2);
 })

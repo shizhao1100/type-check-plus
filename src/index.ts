@@ -1,11 +1,11 @@
-export interface Ioption {
+export interface IOption {
   threshold?: number,
-  onError?: any,
+  onError?: (value: any, type: any, key?: string, index?: number) => void,
   onSucess?: any,
   onTick?: any,
-  onCheck?: any
+  onCheck?: (value: any, type: any, key?: string, index?: number) => void
 }
-interface InodeInfor {
+interface INodeInfor {
   nextNodeName: string,
   canBeUndefind: boolean,
   isArray: boolean
@@ -164,7 +164,7 @@ const checkOneDesclarartion = function (value: any, desclarartion: string): bool
     return false;
   }
 }
-const checkItem = function (value: any, desclarartion: string): boolean {
+const checkItem = function (value: any, desclarartion: string, key?: string): boolean {
   if (isString(desclarartion)) {
     desclarartion = desclarartion.toLowerCase().replace(/ /g, '');
     let desclarartions = desclarartion.split('|');
@@ -178,20 +178,20 @@ const checkItem = function (value: any, desclarartion: string): boolean {
   }
   return false;
 }
-const checkArray = function (value: any[], desclarartion: string, option?: Ioption): boolean {
+const checkArray = function (value: any[], desclarartion: string, option?: IOption, key?: string): boolean {
   const threshold = option ? option.threshold : undefined;
   const arrayItemDesclarartion = desclarartion.slice(0, desclarartion.length - 2);
   let checkThreshold = getArrayCheckThreshold(value.length, threshold);
   while (checkThreshold) {
     if (option && typeof option.onCheck === 'function') {
-      option.onCheck(value[checkThreshold - 1], (desclarartion[checkThreshold - 1] || desclarartion[0]), checkThreshold);
+      option.onCheck(value[checkThreshold - 1], (desclarartion[checkThreshold - 1] || desclarartion[0]), key, checkThreshold);
     }
-    if (checkItem(value[checkThreshold - 1], arrayItemDesclarartion)) {
+    if (checkItem(value[checkThreshold - 1], arrayItemDesclarartion, key)) {
       checkThreshold--;
       continue;
     } else {
       if (option && typeof option.onError === 'function') {
-        option.onError(value[checkThreshold - 1], (desclarartion[checkThreshold - 1] || desclarartion[0]), checkThreshold);
+        option.onError(value[checkThreshold - 1], (desclarartion[checkThreshold - 1] || desclarartion[0]), key, checkThreshold);
       }
       return false;
     }
@@ -201,20 +201,20 @@ const checkArray = function (value: any[], desclarartion: string, option?: Iopti
   }
   return true;
 }
-const checkArrayList = function (value: any[], desclarartion: any[], option?: Ioption): boolean {
+const checkArrayList = function (value: any[], desclarartion: any[], option?: IOption, key?: string): boolean {
   const threshold = option ? option.threshold : undefined;
 
   let checkThreshold = getArrayCheckThreshold(value.length, threshold);
   while (checkThreshold) {
     if (option && typeof option.onCheck === 'function') {
-      option.onCheck(value[checkThreshold - 1], (desclarartion[checkThreshold - 1] || desclarartion[0]), checkThreshold);
+      option.onCheck(value[checkThreshold - 1], (desclarartion[checkThreshold - 1] || desclarartion[0]), key, checkThreshold);
     }
-    if (check(value[checkThreshold - 1], (desclarartion[checkThreshold - 1] || desclarartion[0]))) {
+    if (check(value[checkThreshold - 1], (desclarartion[checkThreshold - 1] || desclarartion[0]), option, key)) {
       checkThreshold--;
       continue;
     } else {
       if (option && typeof option.onError === 'function') {
-        option.onError(value[checkThreshold - 1], (desclarartion[checkThreshold - 1] || desclarartion[0]), checkThreshold);
+        option.onError(value[checkThreshold - 1], (desclarartion[checkThreshold - 1] || desclarartion[0]), key, checkThreshold);
       }
       return false;
     }
@@ -225,16 +225,16 @@ const checkArrayList = function (value: any[], desclarartion: any[], option?: Io
   return true;
 }
 
-const checkObject = function (value: object, desclarartion: object, option?: Ioption) {
+const checkObject = function (value: object, desclarartion: object, option?: IOption) {
   for (let item in desclarartion) {
     if (option && typeof option.onCheck === 'function') {
-      option.onCheck(value[item], desclarartion[item]);
+      option.onCheck(value[item], desclarartion[item], item);
     }
-    if (check(value[item], desclarartion[item], option)) {
+    if (check(value[item], desclarartion[item], option, item)) {
       continue;
     } else {
       if (option && typeof option.onError === 'function') {
-        option.onError(value[item], desclarartion[item]);
+        option.onError(value[item], desclarartion[item], item);
       }
       return false;
     }
@@ -242,18 +242,18 @@ const checkObject = function (value: object, desclarartion: object, option?: Iop
   return true;
 }
 
-const check = function (value: any, desclarartion: any, option?: Ioption): boolean {
+const check = function (value: any, desclarartion: any, option?: IOption, key?: string): boolean {
   if (desclarartionIsArray(value, desclarartion)) {
-    return checkArray(value, desclarartion, option);
+    return checkArray(value, desclarartion, option, key);
   }
   if (desclarartionIsArrayList(value, desclarartion)) {
-    return checkArrayList(value, desclarartion, option);
+    return checkArrayList(value, desclarartion, option, key);
   }
   if (desclarartionIsObject(value, desclarartion)) {
     return checkObject(value, desclarartion, option);
   }
   if (isString(desclarartion)) {
-    return checkItem(value, desclarartion);
+    return checkItem(value, desclarartion, key);
   }
   return false;
 }
@@ -263,9 +263,9 @@ const check = function (value: any, desclarartion: any, option?: Ioption): boole
  * like next node name isArray? canBeUndefind？
  *
  * @param {object} nodeDesclarartion
- * @returns {InodeInfor}
+ * @returns {INodeInfor}
  */
-const getNextNodeInfor = function (nodeDesclarartion: object): InodeInfor {
+const getNextNodeInfor = function (nodeDesclarartion: object): INodeInfor {
   const nodeInfor = {
     nextNodeName: '',
     isArray: false,
@@ -286,7 +286,7 @@ const getNextNodeInfor = function (nodeDesclarartion: object): InodeInfor {
   return nodeInfor;
 }
 
-const checkTreeNode = function (node: any, nodeDesclarartion: object, nodeInfor: InodeInfor, counter: { checkCount: number }, option?: Ioption): boolean {
+const checkTreeNode = function (node: any, nodeDesclarartion: object, nodeInfor: INodeInfor, counter: { checkCount: number }, option?: IOption): boolean {
   counter.checkCount++;
   if (option && typeof option.onTick === 'function') {
     option.onTick(node, counter.checkCount);
@@ -296,20 +296,20 @@ const checkTreeNode = function (node: any, nodeDesclarartion: object, nodeInfor:
   }
   if (!isObject(node)) {
     if (option && typeof option.onError === 'function') {
-      option.onError(node, counter.checkCount);
+      option.onError(node, nodeDesclarartion, nodeInfor.nextNodeName, counter.checkCount);
     }
     return false;
   }
   for (let item in nodeDesclarartion) {
     if (item !== nodeInfor.nextNodeName) {
       if (option && typeof option.onCheck === 'function') {
-        option.onCheck(node[item], nodeDesclarartion[item], counter.checkCount);
+        option.onCheck(node[item], nodeDesclarartion[item], item, counter.checkCount);
       }
-      if (check(node[item], nodeDesclarartion[item])) {
+      if (check(node[item], nodeDesclarartion[item], option, item)) {
         continue;
       } else {
         if (option && typeof option.onError === 'function') {
-          option.onError(node, counter.checkCount);
+          option.onError(node, counter.checkCount, item);
         }
         return false;
       }
@@ -335,16 +335,15 @@ const checkTreeNode = function (node: any, nodeDesclarartion: object, nodeInfor:
   }
   return true;
 }
-check(/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/,'regexp');
 /**
  * checkTree 
  *
  * @param {*} value valueBeCheck
  * @param {object} nodeDesclarartion node desclarartion use 'node' to define next node name
- * @param {Ioption} [option]
+ * @param {IOption} [option]
  * @returns {boolean}
  */
-const checkTree = function (value: any, nodeDesclarartion: object, option?: Ioption): boolean {
+const checkTree = function (value: any, nodeDesclarartion: object, option?: IOption): boolean {
   const nodeInfor = getNextNodeInfor(nodeDesclarartion);
   let counter: { checkCount: number } = { checkCount: 0 };
   const result = checkTreeNode(value, nodeDesclarartion, nodeInfor, counter, option);

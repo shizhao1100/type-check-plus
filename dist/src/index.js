@@ -147,7 +147,7 @@ var checkOneDesclarartion = function (value, desclarartion) {
         return false;
     }
 };
-var checkItem = function (value, desclarartion) {
+var checkItem = function (value, desclarartion, key) {
     if (isString(desclarartion)) {
         desclarartion = desclarartion.toLowerCase().replace(/ /g, '');
         var desclarartions = desclarartion.split('|');
@@ -162,21 +162,21 @@ var checkItem = function (value, desclarartion) {
     }
     return false;
 };
-var checkArray = function (value, desclarartion, option) {
+var checkArray = function (value, desclarartion, option, key) {
     var threshold = option ? option.threshold : undefined;
     var arrayItemDesclarartion = desclarartion.slice(0, desclarartion.length - 2);
     var checkThreshold = getArrayCheckThreshold(value.length, threshold);
     while (checkThreshold) {
         if (option && typeof option.onCheck === 'function') {
-            option.onCheck(value[checkThreshold - 1], (desclarartion[checkThreshold - 1] || desclarartion[0]), checkThreshold);
+            option.onCheck(value[checkThreshold - 1], (desclarartion[checkThreshold - 1] || desclarartion[0]), key, checkThreshold);
         }
-        if (checkItem(value[checkThreshold - 1], arrayItemDesclarartion)) {
+        if (checkItem(value[checkThreshold - 1], arrayItemDesclarartion, key)) {
             checkThreshold--;
             continue;
         }
         else {
             if (option && typeof option.onError === 'function') {
-                option.onError(value[checkThreshold - 1], (desclarartion[checkThreshold - 1] || desclarartion[0]), checkThreshold);
+                option.onError(value[checkThreshold - 1], (desclarartion[checkThreshold - 1] || desclarartion[0]), key, checkThreshold);
             }
             return false;
         }
@@ -186,20 +186,20 @@ var checkArray = function (value, desclarartion, option) {
     }
     return true;
 };
-var checkArrayList = function (value, desclarartion, option) {
+var checkArrayList = function (value, desclarartion, option, key) {
     var threshold = option ? option.threshold : undefined;
     var checkThreshold = getArrayCheckThreshold(value.length, threshold);
     while (checkThreshold) {
         if (option && typeof option.onCheck === 'function') {
-            option.onCheck(value[checkThreshold - 1], (desclarartion[checkThreshold - 1] || desclarartion[0]), checkThreshold);
+            option.onCheck(value[checkThreshold - 1], (desclarartion[checkThreshold - 1] || desclarartion[0]), key, checkThreshold);
         }
-        if (check(value[checkThreshold - 1], (desclarartion[checkThreshold - 1] || desclarartion[0]))) {
+        if (check(value[checkThreshold - 1], (desclarartion[checkThreshold - 1] || desclarartion[0]), option, key)) {
             checkThreshold--;
             continue;
         }
         else {
             if (option && typeof option.onError === 'function') {
-                option.onError(value[checkThreshold - 1], (desclarartion[checkThreshold - 1] || desclarartion[0]), checkThreshold);
+                option.onError(value[checkThreshold - 1], (desclarartion[checkThreshold - 1] || desclarartion[0]), key, checkThreshold);
             }
             return false;
         }
@@ -212,32 +212,32 @@ var checkArrayList = function (value, desclarartion, option) {
 var checkObject = function (value, desclarartion, option) {
     for (var item in desclarartion) {
         if (option && typeof option.onCheck === 'function') {
-            option.onCheck(value[item], desclarartion[item]);
+            option.onCheck(value[item], desclarartion[item], item);
         }
-        if (check(value[item], desclarartion[item], option)) {
+        if (check(value[item], desclarartion[item], option, item)) {
             continue;
         }
         else {
             if (option && typeof option.onError === 'function') {
-                option.onError(value[item], desclarartion[item]);
+                option.onError(value[item], desclarartion[item], item);
             }
             return false;
         }
     }
     return true;
 };
-var check = function (value, desclarartion, option) {
+var check = function (value, desclarartion, option, key) {
     if (desclarartionIsArray(value, desclarartion)) {
-        return checkArray(value, desclarartion, option);
+        return checkArray(value, desclarartion, option, key);
     }
     if (desclarartionIsArrayList(value, desclarartion)) {
-        return checkArrayList(value, desclarartion, option);
+        return checkArrayList(value, desclarartion, option, key);
     }
     if (desclarartionIsObject(value, desclarartion)) {
         return checkObject(value, desclarartion, option);
     }
     if (isString(desclarartion)) {
-        return checkItem(value, desclarartion);
+        return checkItem(value, desclarartion, key);
     }
     return false;
 };
@@ -272,21 +272,21 @@ var checkTreeNode = function (node, nodeDesclarartion, nodeInfor, counter, optio
     }
     if (!isObject(node)) {
         if (option && typeof option.onError === 'function') {
-            option.onError(node, counter.checkCount);
+            option.onError(node, nodeDesclarartion, nodeInfor.nextNodeName, counter.checkCount);
         }
         return false;
     }
     for (var item in nodeDesclarartion) {
         if (item !== nodeInfor.nextNodeName) {
             if (option && typeof option.onCheck === 'function') {
-                option.onCheck(node[item], nodeDesclarartion[item], counter.checkCount);
+                option.onCheck(node[item], nodeDesclarartion[item], item, counter.checkCount);
             }
-            if (check(node[item], nodeDesclarartion[item])) {
+            if (check(node[item], nodeDesclarartion[item], option, item)) {
                 continue;
             }
             else {
                 if (option && typeof option.onError === 'function') {
-                    option.onError(node, counter.checkCount);
+                    option.onError(node, counter.checkCount, item);
                 }
                 return false;
             }
@@ -315,7 +315,6 @@ var checkTreeNode = function (node, nodeDesclarartion, nodeInfor, counter, optio
     }
     return true;
 };
-check(/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/, 'regexp');
 var checkTree = function (value, nodeDesclarartion, option) {
     var nodeInfor = getNextNodeInfor(nodeDesclarartion);
     var counter = { checkCount: 0 };
