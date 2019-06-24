@@ -164,6 +164,11 @@ const checkOneDesclarartion = function (value: any, desclarartion: string): bool
     return false;
   }
 }
+
+const checkItemByRegExp = function (value: any, desclarartion: RegExp, key?: string): boolean {
+  return desclarartion.test(value);
+};
+
 const checkItem = function (value: any, desclarartion: string, key?: string): boolean {
   if (isString(desclarartion)) {
     desclarartion = desclarartion.toLowerCase().replace(/ /g, '');
@@ -251,6 +256,9 @@ const check = function (value: any, desclarartion: any, option?: IOption, key?: 
   }
   if (desclarartionIsObject(value, desclarartion)) {
     return checkObject(value, desclarartion, option);
+  }
+  if (isRegExp(desclarartion)) {
+    return checkItemByRegExp(value, desclarartion, key);
   }
   if (isString(desclarartion)) {
     return checkItem(value, desclarartion, key);

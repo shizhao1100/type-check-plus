@@ -147,6 +147,9 @@ var checkOneDesclarartion = function (value, desclarartion) {
         return false;
     }
 };
+var checkItemByRegExp = function (value, desclarartion, key) {
+    return desclarartion.test(value);
+};
 var checkItem = function (value, desclarartion, key) {
     if (isString(desclarartion)) {
         desclarartion = desclarartion.toLowerCase().replace(/ /g, '');
@@ -235,6 +238,9 @@ var check = function (value, desclarartion, option, key) {
     }
     if (desclarartionIsObject(value, desclarartion)) {
         return checkObject(value, desclarartion, option);
+    }
+    if (isRegExp(desclarartion)) {
+        return checkItemByRegExp(value, desclarartion, key);
     }
     if (isString(desclarartion)) {
         return checkItem(value, desclarartion, key);

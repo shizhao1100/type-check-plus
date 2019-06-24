@@ -116,6 +116,9 @@ const testArray: any[] = [
   ["/[0-9]*px/ isRegExp", /[0-9]*px/, "regexp", true],
   ["/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/ isRegExp", /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/, "regexp", true],
 
+  ["use RegExp check 14px", '14px', /[0-9]*px/, true],
+  ["use RegExp check outlook@outlook.com", 'outlook@outlook.com', /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/, true],
+
   ["object check", {}, {}, true],
   ["object check", { name: 'sz-p', age: 12 }, { age: 'int' }, true],
   ["object check", { name: 'sz-p', age: 12 }, {}, true],
